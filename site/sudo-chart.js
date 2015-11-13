@@ -1,33 +1,9 @@
 //curl -X GET -H "Authorization: Bearer 7cs4m24vzic2zl1phvg036ucz" https://i-06f25fdf.workdaysuv.com/ccx/internalapi/reporting/v1/super/dataSource/ | python -m json.tool > file.json
 
 
-var margin = {top: 5, right: 120, bottom: 20, left: 150},
+var margin = {top: 5, right: 120, bottom: 20, left: 250},
 width = 800 - margin.right - margin.left,
 height = 600 - margin.top - margin.bottom;
-
-function loadBusinessObject(businessObjectWID) {
-  $.ajax({
-  type: "GET",
-  url: "https://i-06f25fdf.workdaysuv.com/ccx/internalapi/reporting/v1/super/businessObject/",
-  dataType: 'json',
-  async: true,
-  headers: {
-    "Authorization": "Bearer 7cs4m24vzic2zl1phvg036ucz"
-  },
-  success: function (data){
-    $.each(data.data, function (data) {
-      var d = {
-        "wid": data.id,
-        "label": data.descriptor,
-        "returnClass": data.classOfExternalFieldResult,
-        "CRFs": data.relatedBusinessObject
-      };
-
-      return d;
-    });    
-  }
-});
-}
 
 $(document).ready(function(){
   sudo.storage.start();
@@ -69,6 +45,40 @@ $("#search").keyup(function () {
     loadBusinessObject(item.object.id)
   });
 });
+
+  function loadBusinessObject(businessObjectWID) {
+  $.ajax({
+  type: "GET",
+  url: "https://i-06f25fdf.workdaysuv.com/ccx/internalapi/reporting/v1/super/businessObject/" + businessObjectWID,
+  dataType: 'json',
+  async: true,
+  headers: {
+    "Authorization": "Bearer 7cs4m24vzic2zl1phvg036ucz"
+  },
+  success: function (data){
+      data.name = data.descriptor;
+      data.children = data.classReportFields;
+
+      $.each(data.children, function (index, data) {
+        data.name = data.descriptor;
+      });
+      root = data;
+      root.x0 = height / 2;
+      root.y0 = 300;
+
+      function collapse(d) {
+        if (d.children) {
+          d._children = d.children;
+          d._children.forEach(collapse);
+          d.children = null;
+        }
+      }
+
+      root.children.forEach(collapse);
+      update(root);
+  }
+});
+}
 
   var duration = 750,i = 0,
   root;
@@ -135,7 +145,7 @@ function update(source) {
   .attr("dy", ".35em")
   .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
   .text(function(d) { return d.name; })
-  .style("fill-opacity", 1e-6).style("font-size", "20px");
+  .style("fill-opacity", 1e-6).style("font-size", "15px");
 
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()
