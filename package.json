@@ -1,0 +1,27 @@
+{
+  "name": "sudo-report",
+  "version": "1.0.0",
+  "description": "a report tool for workday",
+  "main": "server.js",
+  "dependencies": {
+    "node-static": "^0.7.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bpmccurdy/sudo-report.git"
+  },
+  "keywords": [
+    "report"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bpmccurdy/sudo-report/issues"
+  },
+  "homepage": "https://github.com/bpmccurdy/sudo-report#readme"
+}

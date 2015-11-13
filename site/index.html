@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Team Sudo: Workday Object Navigator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+    <link rel="stylesheet" href="sudo-style.css">
+    <script src="sudo-chart.js"></script>
+    <script src="sudo-storage.js"></script>
+    <script src="sudo-search.js"></script>
+
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <form class="navbar-form navbar-left">
+          <input id="search" type="text" class="form-control" placeholder="Search...">
+        </form>
+        <div class="navbar-header navbar-right">
+          <a class="navbar-brand" href="#">Team Sudo</a>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul id="source-list" class="nav nav-sidebar">
+          </ul>
+        </div>
+        <div id="bo-tree" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
