@@ -1,9 +1,12 @@
 //curl -X GET -H "Authorization: Bearer 7cs4m24vzic2zl1phvg036ucz" https://i-06f25fdf.workdaysuv.com/ccx/internalapi/reporting/v1/super/dataSource/ | python -m json.tool > file.json
 
+function truncate(str, limit) { var bits, i; if ("string" !== typeof str) { return ''; } bits = str.split(''); if (bits.length > limit) { for (i = bits.length - 1; i > -1; --i) { if (i > limit) { bits.length = i; } else if (' ' === bits[i]) { bits.length = i; break; } } bits.push('...'); } return bits.join(''); }
+
+
 
 var margin = {top: 5, right: 120, bottom: 20, left: 250},
-width = 800 - margin.right - margin.left,
-height = 600 - margin.top - margin.bottom;
+width = 1150 - margin.right - margin.left,
+height = 700 - margin.top - margin.bottom;
 
 $(document).ready(function(){
   sudo.storage.start();
@@ -58,9 +61,9 @@ $("#search").keyup(function () {
   success: function (data){
       data.name = data.descriptor;
       data.children = data.classReportFields;
-
+ 
       $.each(data.children, function (index, data) {
-        data.name = data.descriptor;
+        data.name = truncate(data.descriptor, 27); 
       });
       root = data;
       root.x0 = height / 2;
@@ -68,7 +71,44 @@ $("#search").keyup(function () {
 
       function collapse(d) {
         if (d.children) {
-          d._children = d.children;
+          d._children = d.children; 
+          d._children.forEach(collapse); 
+          d.children = null;
+        } 
+      }
+
+      root.children.forEach(collapse);
+      update(root); 
+  }
+});
+}
+
+function loadSubBusinessObject(businessObjectWID) {
+  console.log(businessObjectWID);
+
+  $.ajax({
+  type: "GET",
+  url: "https://i-06f25fdf.workdaysuv.com/ccx/internalapi/reporting/v1/super/businessObject/" + businessObjectWID,
+  dataType: 'json',
+  async: true,
+  headers: {
+    "Authorization": "Bearer 7cs4m24vzic2zl1phvg036ucz"
+  },
+  success: function (data){
+      console.log("success");
+      data.name = data.descriptor;
+      data.children = data.classReportFields;
+ 
+      $.each(data.children, function (index, data) {
+        data.name = truncate(data.descriptor, 27); 
+      });
+
+      root.x0 = height / 2;
+      root.y0 = 300;
+
+      function collapse(d) {
+        if (d.children) {
+          d._children = d.children; 
           d._children.forEach(collapse);
           d.children = null;
         }
@@ -191,10 +231,38 @@ function click(d) {
     d._children = d.children;
     d.children = null;
   } else {
+    
+    if (d.relatedBusinessObject && d._children == null) {
+
+
+      $.ajax({
+        type: "GET",
+        url: "https://i-06f25fdf.workdaysuv.com/ccx/internalapi/reporting/v1/super/businessObject/" + d.relatedBusinessObject.id,
+        dataType: 'json',
+        async: true,
+        headers: {
+          "Authorization": "Bearer 7cs4m24vzic2zl1phvg036ucz"
+        },
+        success: function (data){
+            d.children = data.classReportFields;
+     
+            $.each(d.children, function (index, data) {
+              data.name = data.descriptor; 
+            });
+
+        }
+      });
+
+  } else {
     d.children = d._children;
     d._children = null;
   }
-  update(d);
+
+  }
+
+  update(root);
+  
+
 }
 
 
