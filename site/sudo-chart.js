@@ -38,10 +38,14 @@ $("#search").keyup(function () {
   $.each(sudo.search.query($("#search").val()), function (index, data) {
     console.log(data);
     var item = sudo.storage.get(data.split("$")[0], data.split("$")[1]);
-    out += "<li><a href='#'>" + item.label + "</a></li>";
-  });1
+    out += "<li><a id='" + data + "' class='bo' href='#'>" + item.label + "</a></li>";
+  });
   $("#source-list").html(out);
-  console.log();
+  $(".bo").click(function(e){
+    var data = $(e.target).attr("id");
+    var item = sudo.storage.get(data.split("$")[0], data.split("$")[1]);
+    loadBusinessObject(item.object.id)
+  });
 });
 
   var duration = 750,i = 0,
