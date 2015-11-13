@@ -96,25 +96,6 @@ $("#search").keyup(function () {
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  d3.json("sample.json", function(error, flare) {
-    if (error) throw error;
-
-    root = flare;
-    root.x0 = height / 2;
-    root.y0 = 300;
-
-    function collapse(d) {
-      if (d.children) {
-        d._children = d.children;
-        d._children.forEach(collapse);
-        d.children = null;
-      }
-    }
-
-    root.children.forEach(collapse);
-    update(root);
-  });
-
 //d3.select(self.frameElement).style("height", "400px");
 
 function update(source) {
