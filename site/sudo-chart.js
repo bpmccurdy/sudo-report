@@ -5,7 +5,29 @@ var margin = {top: 5, right: 120, bottom: 20, left: 150},
 width = 800 - margin.right - margin.left,
 height = 600 - margin.top - margin.bottom;
 
+function loadBusinessObject(businessObjectWID) {
+  $.ajax({
+  type: "GET",
+  url: "https://i-06f25fdf.workdaysuv.com/ccx/internalapi/reporting/v1/super/businessObject/",
+  dataType: 'json',
+  async: true,
+  headers: {
+    "Authorization": "Bearer 7cs4m24vzic2zl1phvg036ucz"
+  },
+  success: function (data){
+    $.each(data.data, function (data) {
+      var d = {
+        "wid": data.id,
+        "label": data.descriptor,
+        "returnClass": data.classOfExternalFieldResult,
+        "CRFs": data.relatedBusinessObject
+      };
 
+      return d;
+    });    
+  }
+});
+}
 
 $(document).ready(function(){
   sudo.storage.start();
