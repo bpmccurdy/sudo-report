@@ -38,12 +38,18 @@ $(document).ready(function(){
   $("#search").keyup(function () {
     var out = ""
     $.each(sudo.search.query($("#search").val()), function (index, data) {
-      //console.log(data);
+      console.log(data);
       var item = sudo.storage.get(data.split("$")[0], data.split("$")[1]);
       out += "<li><a id='" + data + "' class='bo' href='#'>" + item.label + "</a></li>";
     });
     $("#source-list").html(out);
     $(".bo").click(function(e){
+      if (prevElementID === "") {
+        prevElementID = e.target.id;
+      }
+      document.getElementById(prevElementID).parentElement.className = "";
+      document.getElementById(e.target.id).parentElement.className = "active";
+      prevElementID = e.target.id;
       var data = $(e.target).attr("id");
       var item = sudo.storage.get(data.split("$")[0], data.split("$")[1]);
       loadBusinessObject(item.object.id)
