@@ -3,6 +3,7 @@
 function truncate(str, limit) { var bits, i; if ("string" !== typeof str) { return ''; } bits = str.split(''); if (bits.length > limit) { for (i = bits.length - 1; i > -1; --i) { if (i > limit) { bits.length = i; } else if (' ' === bits[i]) { bits.length = i; break; } } bits.push('...'); } return bits.join(''); }
 
 var xxx;
+var prevElementID = "";
 
 var margin = {top: 5, right: 120, bottom: 20, left: 250},
 width = 1150 - margin.right - margin.left,
